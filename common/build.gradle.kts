@@ -50,3 +50,28 @@ kotlin {
 configurations {
     create("compileClasspath")
 }
+
+val NamedDomainObjectCollection<KotlinTarget>.ios: KotlinNativeTarget
+    get() = findByName("ios") as KotlinNativeTarget
+
+tasks {
+    val check by getting
+
+    val iosTest by registering {
+        onlyIf { OperatingSystem.current().isMacOsX }
+
+        dependsOn("linkTestDebugExecutableIos")
+        group = "verification"
+
+        val device = project.findProject("iosDevice")?.toString() ?: "iPhone 8"
+
+        doLast {
+            val binary = kotlin.targets.ios.compilations["test"].getBinary(NativeOutputKind.EXECUTABLE, NativeBuildType.DEBUG)
+            exec {
+                commandLine("xcrun", "simctl", "spawn", device, binary.absolutePath)
+            }
+        }
+    }
+
+    check.dependsOn(iosTest)
+}
