@@ -16,3 +16,5 @@ pluginManagement {
 }
 
 rootProject.name = "kotlin-mpp-mobile"
+
+include(":common")
