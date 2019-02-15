@@ -5,6 +5,17 @@ plugins {
     kotlin("jvm") version "1.3.11"
 }
 
+buildscript {
+    repositories {
+        google()
+        jcenter()
+    }
+    dependencies {
+        classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:1.3.11")
+        classpath("com.android.tools.build:gradle:3.3.1")
+    }
+}
+
 repositories {
     google()
     jcenter()
