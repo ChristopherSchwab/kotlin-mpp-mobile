@@ -1,4 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">App Name</string>
+    <string name="app_name">Movie list</string>
+
+    <string name="error">An error occurred when loading the list of movies.</string>
+
+    <string name="title">Title</string>
+    <string name="jan_1_2000">January 1, 2000</string>
+    <string name="released">Released:</string>
+    <string name="poster_of_a_movie">Poster of the movie</string>
+    <string name="poster_missing">Poster \nmissing</string>
 </resources>
