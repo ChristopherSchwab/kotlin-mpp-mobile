@@ -2,23 +2,29 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
     java
-    kotlin("jvm") version "1.3.11"
+    kotlin("jvm") version "1.3.20"
 }
 
 buildscript {
     repositories {
         google()
         jcenter()
+        maven { setUrl("https://kotlin.bintray.com/kotlinx") }
+        mavenLocal()
     }
     dependencies {
-        classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:1.3.11")
-        classpath("com.android.tools.build:gradle:3.3.1")
+        classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:1.3.20")
+        classpath("com.android.tools.build:gradle:3.3.2")
+        classpath("org.jetbrains.kotlin:kotlin-serialization:1.3.20")
     }
 }
 
 repositories {
     google()
     jcenter()
+    maven { setUrl("https://kotlin.bintray.com/kotlinx") }
+    maven { setUrl("https://dl.bintray.com/kotlin/ktor") }
+    mavenLocal()
 }
 
 dependencies {

@@ -6,10 +6,12 @@ import org.jetbrains.kotlin.gradle.plugin.mpp.NativeOutputKind
 
 plugins {
     kotlin("multiplatform")
+    id("kotlinx-serialization")
 }
 
 repositories {
     jcenter()
+    maven { setUrl("https://kotlin.bintray.com/kotlinx") }
 }
 
 kotlin {
@@ -29,6 +31,10 @@ kotlin {
         getByName("commonMain") {
             dependencies {
                 implementation(kotlin("stdlib-common"))
+                implementation("io.ktor:ktor-client-core:1.0.0")
+                implementation("io.ktor:ktor-client-json:1.0.0")
+                implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core-common:1.0.0")
+                implementation("org.jetbrains.kotlinx:kotlinx-serialization-runtime-common:0.10.0")
             }
         }
         getByName("commonTest") {
@@ -40,12 +46,25 @@ kotlin {
         getByName("jvmMain") {
             dependencies {
                 implementation(kotlin("stdlib"))
+                implementation("io.ktor:ktor-client-core-jvm:1.0.0")
+                implementation("io.ktor:ktor-client-json-jvm:1.0.0")
+                implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.0.0")
+                implementation("org.jetbrains.kotlinx:kotlinx-serialization-runtime:0.10.0")
             }
         }
         getByName("jvmTest") {
             dependencies {
                 implementation(kotlin("test"))
                 implementation(kotlin("test-junit"))
+            }
+        }
+        getByName("iosMain") {
+            dependencies {
+                implementation("io.ktor:ktor-client-core-ios:1.0.0")
+                implementation("io.ktor:ktor-client-ios:1.0.0")
+                implementation("io.ktor:ktor-client-json-ios:1.0.0")
+                implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core-native:1.0.0")
+                implementation("org.jetbrains.kotlinx:kotlinx-serialization-runtime-native:0.10.0")
             }
         }
     }
