@@ -8,7 +8,7 @@ import kotlinx.serialization.json.Json
 
 interface HttpRequestSerializer {
     suspend fun <T> executeHttpRequest(
-        serializer: KSerializer<T>,
+        deserializer: KSerializer<T>,
         urlBuilderProtocol: URLProtocol = URLProtocol.HTTPS,
         urlBuilderPort: Int = 443,
         urlBuilderHost: String,
@@ -16,12 +16,12 @@ interface HttpRequestSerializer {
     ): T
 }
 
-class HttpClientHttpRequestSerializer : HttpRequestSerializer {
+class HttpClientHttpRequestSerializer(private val httpClient: HttpClient = HttpClient()) : HttpRequestSerializer {
 
-    private val httpClient = HttpClient()
+    private val json = Json(strictMode = false)
 
     override suspend fun <T> executeHttpRequest(
-        serializer: KSerializer<T>,
+        deserializer: KSerializer<T>,
         urlBuilderProtocol: URLProtocol,
         urlBuilderPort: Int,
         urlBuilderHost: String,
@@ -31,16 +31,11 @@ class HttpClientHttpRequestSerializer : HttpRequestSerializer {
             url {
                 protocol = urlBuilderProtocol
                 port = urlBuilderPort
-                host = urlBuilderHost
+                host = urlBuilderHost   //IllegalArgumentException
                 encodedPath = urlBuilderEncodedPath
             }
-        }.also { httpResponseString ->
-            Json(strictMode = false).parse(
-                serializer,
-                httpResponseString
-            ).also { httpResponse ->
-                return httpResponse
-            }
+        }.also { httpResponseJson ->
+            return json.parse(deserializer, httpResponseJson) //JsonException
         }
     }
 }

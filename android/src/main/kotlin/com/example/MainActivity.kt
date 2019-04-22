@@ -70,8 +70,11 @@ class MainActivity : MovieListView, AppCompatActivity(), OnPageEndCallback, Coro
         movieListController.onPageEnd()
     }
 
-    override fun showError() {
-        Toast.makeText(this, R.string.error, Toast.LENGTH_LONG)
+    override fun showError(errorMessage: String) {
+        val context = this
+        launch {
+            Toast.makeText(context, errorMessage, Toast.LENGTH_LONG)
+        }
     }
 
 }

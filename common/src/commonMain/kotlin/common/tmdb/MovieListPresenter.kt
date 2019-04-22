@@ -7,7 +7,7 @@ import common.tmdb.entities.MovieViewItem
 import common.tmdb.entities.TMDbConfiguration
 import common.tmdb.entities.TMDbMoviePage
 import common.tmdb.url.TMDbImageUrlBuilder
-import common.util.Date
+import kotlinx.serialization.json.JsonException
 
 class MovieListPresenter(private val view: MovieListView): MovieListInteractorOutputBoundary {
 
@@ -40,6 +40,10 @@ class MovieListPresenter(private val view: MovieListView): MovieListInteractorOu
     }
 
     override fun presentException(exception: Exception) {
-        view.showError()
+        when (exception) {
+            is JsonException -> view.showError("a")
+            is IllegalArgumentException -> view.showError("b")
+            else -> view.showError("c")
+        }
     }
 }

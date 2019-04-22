@@ -22,32 +22,17 @@ class MovieListInteractor(
     tmDbApiKey: String
 ): MovieListInteractorInputBoundary {
 
-    private var page: Int = 0
-    private var nextPage: Int = 1
-    private var totalPages: Int = Int.MAX_VALUE
+    var page: Int = 0
+        private set
+    var nextPage: Int = 1
+        private set
+    var totalPages: Int = Int.MAX_VALUE
+        private set
 
     private val configurationPathBuilder = TMDbConfigurationPath.TMDbConfigurationPathBuilder(tmDbApiKey)
     private val discoverPathBuilder = TMDbDiscoverPath.TMDbDiscoverPathBuilder(tmDbApiKey)
 
-    private lateinit var awaitTMDbConfiguration: Deferred<Any>
-
-    init {
-        GlobalScope.launch(ApplicationDispatcher) {
-            awaitTMDbConfiguration = async {
-                try {
-                    httpRequestSerializer.executeHttpRequest(
-                        serializer = TMDbConfiguration.Loaded.serializer(),
-                        urlBuilderHost = tmDbApiHost,
-                        urlBuilderEncodedPath = configurationPathBuilder.build().path
-                    ).also { tmDbConfigurationLoaded ->
-                        movieListPresenter.setConfiguration(tmDbConfigurationLoaded)
-                    }
-                } catch (e: Exception) {
-                    movieListPresenter.presentException(e)
-                }
-            }
-        }
-    }
+    private var tmDbConfiguration: TMDbConfiguration = TMDbConfiguration.NotLoaded
 
     override fun loadCurrentMovies() {
         page = 0
@@ -71,7 +56,7 @@ class MovieListInteractor(
                 val awaitTMDbMoviePage = async {
                     try {
                         httpRequestSerializer.executeHttpRequest(
-                            serializer = TMDbMoviePage.serializer(),
+                            deserializer = TMDbMoviePage.serializer(),
                             urlBuilderHost = tmDbApiHost,
                             urlBuilderEncodedPath = discoverPathBuilder.page(nextPage).build().path
                         )
@@ -81,7 +66,20 @@ class MovieListInteractor(
                     }
                 }
 
-                if (awaitTMDbConfiguration.isActive) awaitTMDbConfiguration.await()
+                if (tmDbConfiguration is TMDbConfiguration.NotLoaded) {
+                    try {
+                        httpRequestSerializer.executeHttpRequest(
+                            deserializer = TMDbConfiguration.Loaded.serializer(),
+                            urlBuilderHost = tmDbApiHost,
+                            urlBuilderEncodedPath = configurationPathBuilder.build().path
+                        ).also { tmDbConfigurationLoaded ->
+                            tmDbConfiguration = tmDbConfigurationLoaded
+                            movieListPresenter.setConfiguration(tmDbConfigurationLoaded)
+                        }
+                    } catch (e: Exception) {
+                        movieListPresenter.presentException(e)
+                    }
+                }
 
                 awaitTMDbMoviePage.await().also { tmDbMoviePage ->
                     page = tmDbMoviePage.page
