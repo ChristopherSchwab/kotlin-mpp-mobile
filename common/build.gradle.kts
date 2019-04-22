@@ -44,6 +44,8 @@ kotlin {
             dependencies {
                 implementation(kotlin("test-common"))
                 implementation(kotlin("test-annotations-common"))
+                implementation("io.mockk:mockk:1.9.3")
+                implementation("io.ktor:ktor-client-mock:1.0.0")
             }
         }
         getByName("jvmMain") {
@@ -51,6 +53,7 @@ kotlin {
                 implementation(kotlin("stdlib"))
                 implementation("io.ktor:ktor-client-core-jvm:1.0.0")
                 implementation("io.ktor:ktor-client-json-jvm:1.0.0")
+                implementation("com.soywiz:klock-jvm:1.4.0")
                 implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.0.0")
                 implementation("org.jetbrains.kotlinx:kotlinx-serialization-runtime:0.10.0")
             }
@@ -59,6 +62,7 @@ kotlin {
             dependencies {
                 implementation(kotlin("test"))
                 implementation(kotlin("test-junit"))
+                implementation("io.ktor:ktor-client-mock-jvm:1.0.0")
             }
         }
         getByName("iosMain") {
@@ -71,6 +75,11 @@ kotlin {
                 implementation("com.soywiz:klock-iosarm64:1.4.0")
                 implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core-native:1.0.0")
                 implementation("org.jetbrains.kotlinx:kotlinx-serialization-runtime-native:0.10.0")
+            }
+        }
+        getByName("iosTest") {
+            dependencies {
+                implementation("io.ktor:ktor-client-mock-native:1.0.0")
             }
         }
     }
