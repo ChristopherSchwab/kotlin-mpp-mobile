@@ -11,11 +11,13 @@ plugins {
 
 repositories {
     jcenter()
-    maven { setUrl("https://kotlin.bintray.com/kotlinx") }
+    maven {
+        setUrl("https://kotlin.bintray.com/kotlinx")
+        setUrl("https://dl.bintray.com/soywiz/soywiz")
+    }
 }
 
 kotlin {
-
     jvm()
 
     when (System.getenv("SDK_NAME")?.startsWith("iphoneos")) {
@@ -33,6 +35,7 @@ kotlin {
                 implementation(kotlin("stdlib-common"))
                 implementation("io.ktor:ktor-client-core:1.0.0")
                 implementation("io.ktor:ktor-client-json:1.0.0")
+                implementation("com.soywiz:klock-metadata:1.4.0")
                 implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core-common:1.0.0")
                 implementation("org.jetbrains.kotlinx:kotlinx-serialization-runtime-common:0.10.0")
             }
@@ -63,6 +66,9 @@ kotlin {
                 implementation("io.ktor:ktor-client-core-ios:1.0.0")
                 implementation("io.ktor:ktor-client-ios:1.0.0")
                 implementation("io.ktor:ktor-client-json-ios:1.0.0")
+                implementation("com.soywiz:klock-iosx64:1.4.0")
+                implementation("com.soywiz:klock-iosarm32:1.4.0")
+                implementation("com.soywiz:klock-iosarm64:1.4.0")
                 implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core-native:1.0.0")
                 implementation("org.jetbrains.kotlinx:kotlinx-serialization-runtime-native:0.10.0")
             }

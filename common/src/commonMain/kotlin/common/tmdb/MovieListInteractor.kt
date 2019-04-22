@@ -1,18 +1,17 @@
 package common.tmdb
 
+import com.soywiz.klock.DateTime
+import com.soywiz.klock.days
 import common.tmdb.entities.TMDbConfiguration
 import common.tmdb.entities.TMDbMoviePage
 import common.tmdb.url.TMDbConfigurationPath
 import common.tmdb.url.TMDbDiscoverPath
 import common.util.ApplicationDispatcher
-import common.util.Date
 import common.util.HttpRequestSerializer
 import kotlinx.coroutines.*
 
 interface MovieListInteractorInputBoundary {
     fun loadCurrentMovies()
-    fun loadMostPopularMovies()
-    fun loadHighestRevenueMovies()
     fun loadNextPage()
 }
 
@@ -57,33 +56,9 @@ class MovieListInteractor(
 
         discoverPathBuilder
             .reset()
-            .primaryReleaseDateGTE(Date.currentTimestamp - Date.day * 7)
-            .primaryReleaseDateLTE(Date.currentTimestamp + Date.day)
+            .primaryReleaseDateGTE(DateTime.now() - 7.days)
+            .primaryReleaseDateLTE(DateTime.now() + 1.days)
             .sortByPopularity()
-
-        loadNextPage()
-    }
-
-    override fun loadMostPopularMovies() {
-        page = 0
-        nextPage = 1
-        totalPages = Int.MAX_VALUE
-
-        discoverPathBuilder
-            .reset()
-            .sortByPopularity()
-
-        loadNextPage()
-    }
-
-    override fun loadHighestRevenueMovies() {
-        page = 0
-        nextPage = 1
-        totalPages = Int.MAX_VALUE
-
-        discoverPathBuilder
-            .reset()
-            .sortByRevenue()
 
         loadNextPage()
     }

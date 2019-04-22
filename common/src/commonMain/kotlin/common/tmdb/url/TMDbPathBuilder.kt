@@ -1,15 +1,15 @@
 package common.tmdb.url
 
-import common.util.Date
-import common.util.Timestamp
+import com.soywiz.klock.DateFormat
+import com.soywiz.klock.DateTime
+import com.soywiz.klock.format
 
 abstract class TMDbPath internal constructor(private val builder: TMDbPathBuilder<out TMDbPath>) {
 
     abstract val pathBase: String
+
     val path: String
-        get() = pathBase.plus(
-            builder.parameters.map { parameter -> "&${parameter.key}=${parameter.value}" }.joinToString(separator = "")
-        )
+        get() = pathBase.plus(builder.parameters.map { parameter -> "&${parameter.key}=${parameter.value}" }.joinToString(separator = ""))
 
     abstract class TMDbPathBuilder<T : TMDbPath>(private val apiKey: String) {
 
@@ -48,24 +48,23 @@ class TMDbDiscoverPath private constructor(builder: TMDbDiscoverPathBuilder) : T
     override val pathBase: String
         get() = "3/discover/movie?"
 
+
     class TMDbDiscoverPathBuilder(apiKey: String) : TMDbPathBuilder<TMDbDiscoverPath>(apiKey) {
+
+        private val tmDbDateFormat = DateFormat("yyyy-MM-dd")
 
         fun reset() = apply { super.resetParameters() }
 
-        fun primaryReleaseDateGTE(primaryReleaseDateGTE: Timestamp) = apply {
-            parameters["primary_release_date.gte"] = Date.format(primaryReleaseDateGTE, "yyyy-MM-dd")
+        fun primaryReleaseDateGTE(primaryReleaseDateGTE: DateTime) = apply {
+            parameters["primary_release_date.gte"] = tmDbDateFormat.format(primaryReleaseDateGTE)
         }
 
-        fun primaryReleaseDateLTE(primaryReleaseDateLTE: Timestamp) = apply {
-            parameters["primary_release_date.lte"] = Date.format(primaryReleaseDateLTE, "yyyy-MM-dd")
+        fun primaryReleaseDateLTE(primaryReleaseDateLTE: DateTime) = apply {
+            parameters["primary_release_date.lte"] = tmDbDateFormat.format(primaryReleaseDateLTE)
         }
 
         fun sortByPopularity() = apply {
             parameters["sort_by"] = "popularity.desc"
-        }
-
-        fun sortByRevenue() = apply {
-            parameters["sort_by"] = "revenue.desc"
         }
 
         fun page(page: Int) = apply {
