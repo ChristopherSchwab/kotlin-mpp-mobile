@@ -12,7 +12,7 @@ import kotlinx.serialization.json.JsonException
 class MovieListPresenter(private val view: MovieListView): MovieListInteractorOutputBoundary {
 
     private val tmDbImageUrlBuilder: TMDbImageUrlBuilder = TMDbImageUrlBuilder()
-    private var tmDbConfiguration: TMDbConfiguration = TMDbConfiguration.NotLoaded
+    private var tmDbConfiguration: TMDbConfiguration? = null
 
     private val tmDbDateFormat = DateFormat("yyyy-MM-dd")
     private val movieViewItemDateFormat = DateFormat("MMMM d, yyyy")

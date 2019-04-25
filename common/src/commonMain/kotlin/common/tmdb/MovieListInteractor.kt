@@ -32,7 +32,7 @@ class MovieListInteractor(
     private val configurationPathBuilder = TMDbConfigurationPath.TMDbConfigurationPathBuilder(tmDbApiKey)
     private val discoverPathBuilder = TMDbDiscoverPath.TMDbDiscoverPathBuilder(tmDbApiKey)
 
-    private var tmDbConfiguration: TMDbConfiguration = TMDbConfiguration.NotLoaded
+    private var tmDbConfiguration: TMDbConfiguration? = null
 
     override fun loadCurrentMovies() {
         page = 0
@@ -66,10 +66,10 @@ class MovieListInteractor(
                     }
                 }
 
-                if (tmDbConfiguration is TMDbConfiguration.NotLoaded) {
+                if (tmDbConfiguration == null) {
                     try {
                         httpRequestSerializer.executeHttpRequest(
-                            deserializer = TMDbConfiguration.Loaded.serializer(),
+                            deserializer = TMDbConfiguration.serializer(),
                             urlBuilderHost = tmDbApiHost,
                             urlBuilderEncodedPath = configurationPathBuilder.build().path
                         ).also { tmDbConfigurationLoaded ->

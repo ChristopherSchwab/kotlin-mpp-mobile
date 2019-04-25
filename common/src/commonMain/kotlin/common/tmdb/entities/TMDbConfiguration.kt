@@ -3,14 +3,10 @@ package common.tmdb.entities
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
-sealed class TMDbConfiguration {
-    @Serializable
-    data class Loaded(
-        val images: TMDbConfigurationImages
-    ) : TMDbConfiguration()
-
-    object NotLoaded : TMDbConfiguration()
-}
+@Serializable
+data class TMDbConfiguration(
+    val images: TMDbConfigurationImages
+)
 
 @Serializable
 data class TMDbConfigurationImages(

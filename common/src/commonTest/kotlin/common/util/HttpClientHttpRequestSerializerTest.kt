@@ -18,12 +18,12 @@ import kotlin.test.assertEquals
 
 class HttpClientHttpRequestSerializerTest {
 
-    lateinit var testTMDbConfiguration: TMDbConfiguration.Loaded
+    lateinit var testTMDbConfiguration: TMDbConfiguration
     lateinit var testTMDbConfigurationJson: String
 
     @BeforeTest
     fun setup() {
-        testTMDbConfiguration = TMDbConfiguration.Loaded(
+        testTMDbConfiguration = TMDbConfiguration(
             TMDbConfigurationImages(
                 "http://example.com",
                 listOf("w100"),
@@ -32,7 +32,7 @@ class HttpClientHttpRequestSerializerTest {
         )
 
         testTMDbConfigurationJson = Json.stringify(
-            TMDbConfiguration.Loaded.serializer(),
+            TMDbConfiguration.serializer(),
             testTMDbConfiguration
         )
     }
@@ -52,7 +52,7 @@ class HttpClientHttpRequestSerializerTest {
 
         val tmDbConfiguration = runBlocking {
             testHttpClientHttpRequestSerializer.executeHttpRequest(
-                TMDbConfiguration.Loaded.serializer(),
+                TMDbConfiguration.serializer(),
                 urlBuilderHost = "example.com",
                 urlBuilderEncodedPath = "some/path"
             )

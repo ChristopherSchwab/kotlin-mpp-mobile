@@ -38,7 +38,7 @@ android {
     }
 
     packagingOptions {
-        pickFirst("META-INF/klock.kotlin_module")
+        pickFirst("META-INF/*.kotlin_module")
     }
 }
 
@@ -49,9 +49,9 @@ dependencies {
     implementation("com.android.support:design:28.0.0")
     implementation("com.android.support:recyclerview-v7:28.0.0")
     implementation("com.android.support:cardview-v7:28.0.0")
-    implementation("io.ktor:ktor-client-json-jvm:1.0.0")
-    implementation("io.ktor:ktor-client-okhttp:1.0.0")
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.0.0")
+    implementation("io.ktor:ktor-client-json-jvm:1.1.3")
+    implementation("io.ktor:ktor-client-okhttp:1.1.3")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.1.1")
     implementation("com.squareup.picasso:picasso:2.71828")
     testImplementation("junit:junit:4.12")
     androidTestImplementation("com.android.support.test:runner:1.0.2")

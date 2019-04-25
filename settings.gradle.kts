@@ -17,5 +17,7 @@ pluginManagement {
 
 rootProject.name = "kotlin-mpp-mobile"
 
+enableFeaturePreview("GRADLE_METADATA")
+
 include(":common")
 include(":android")

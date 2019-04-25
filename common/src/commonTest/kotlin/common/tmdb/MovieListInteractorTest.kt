@@ -21,7 +21,7 @@ class MovieListInteractorTest {
 
     lateinit var testMovieListPresenter: MovieListInteractorOutputBoundary
 
-    lateinit var testTMDbConfiguration: TMDbConfiguration.Loaded
+    lateinit var testTMDbConfiguration: TMDbConfiguration
     lateinit var testTMDbConfigurationJson: String
 
     lateinit var testTMDbMoviePage: TMDbMoviePage
@@ -33,7 +33,7 @@ class MovieListInteractorTest {
     fun setup() {
         testMovieListPresenter = mockk(relaxed = true)
 
-        testTMDbConfiguration = TMDbConfiguration.Loaded(
+        testTMDbConfiguration = TMDbConfiguration(
             TMDbConfigurationImages(
                 "http://example.com",
                 listOf("w100"),
@@ -42,7 +42,7 @@ class MovieListInteractorTest {
         )
 
         testTMDbConfigurationJson = Json.stringify(
-            TMDbConfiguration.Loaded.serializer(),
+            TMDbConfiguration.serializer(),
             testTMDbConfiguration
         )
 
@@ -60,7 +60,7 @@ class MovieListInteractorTest {
 
         testHttpRequestSerializer = TestHttpRequestSerializer(
             mapOf(
-                TMDbConfiguration.Loaded.serializer() to testTMDbConfigurationJson,
+                TMDbConfiguration.serializer() to testTMDbConfigurationJson,
                 TMDbMoviePage.serializer() to testTMDbMoviePageJson
             )
         )

@@ -9,7 +9,10 @@ buildscript {
     repositories {
         google()
         jcenter()
-        maven { setUrl("https://kotlin.bintray.com/kotlinx") }
+        maven {
+            setUrl("https://kotlin.bintray.com/kotlinx")
+            setUrl("https://dl.bintray.com/jetbrains/kotlin-native-dependencies")
+        }
         mavenLocal()
     }
     dependencies {

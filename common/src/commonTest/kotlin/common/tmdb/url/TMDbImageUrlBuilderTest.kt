@@ -13,14 +13,14 @@ class TMDbImageUrlBuilderTest {
     var urlRegex = "^(https?|ftp|file)://[-a-zA-Z0-9+&@#/%?=~_|!:,.;]*[-a-zA-Z0-9+&@#/%=~_|]".toRegex()
 
     lateinit var testTMDbImageUrlBuilder: TMDbImageUrlBuilder
-    lateinit var testTMDbConfiguration: TMDbConfiguration.Loaded
+    lateinit var testTMDbConfiguration: TMDbConfiguration
     lateinit var testTMDbMovie: TMDbMovie
 
     @BeforeTest
     fun setup() {
         testTMDbImageUrlBuilder = TMDbImageUrlBuilder()
 
-        testTMDbConfiguration = TMDbConfiguration.Loaded(
+        testTMDbConfiguration = TMDbConfiguration(
             TMDbConfigurationImages(
                 "http://example.com/",
                 listOf("w100", "w240"),
