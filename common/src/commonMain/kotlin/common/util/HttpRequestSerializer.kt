@@ -16,7 +16,9 @@ interface HttpRequestSerializer {
     ): T
 }
 
-class HttpClientHttpRequestSerializer(private val httpClient: HttpClient = HttpClient()) : HttpRequestSerializer {
+class HttpClientHttpRequestSerializer(private val httpClient: HttpClient) : HttpRequestSerializer {
+
+    constructor() : this(HttpClient())
 
     private val json = Json(strictMode = false)
 

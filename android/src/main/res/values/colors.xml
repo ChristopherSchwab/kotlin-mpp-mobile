@@ -6,4 +6,6 @@
 
     <color name="colorTextPrimary">#202020</color>
     <color name="colorTextSecondary">#2d2d2d</color>
+
+    <color name="colorBackground">#e3e3e3</color>
 </resources>

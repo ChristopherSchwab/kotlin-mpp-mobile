@@ -1,0 +1,22 @@
+PODS:
+  - MaterialComponents/ShadowElevations (73.0.0)
+  - SDWebImage (4.4.2):
+    - SDWebImage/Core (= 4.4.2)
+  - SDWebImage/Core (4.4.2)
+
+DEPENDENCIES:
+  - MaterialComponents/ShadowElevations
+  - SDWebImage (= 4.4.2)
+
+SPEC REPOS:
+  https://github.com/cocoapods/specs.git:
+    - MaterialComponents
+    - SDWebImage
+
+SPEC CHECKSUMS:
+  MaterialComponents: 5ee94fadd206902ffa318ba5adfd3c9c8c799000
+  SDWebImage: 624d6e296c69b244bcede364c72ae0430ac14681
+
+PODFILE CHECKSUM: bfb9d92fa7eabf4270fd47520d11b07c99afc7cb
+
+COCOAPODS: 1.5.3
