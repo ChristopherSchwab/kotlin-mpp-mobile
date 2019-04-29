@@ -73,7 +73,7 @@ class MovieListInteractorTest {
 
     @Test
     fun `Presenter configuration is set before presentMovieList is called`() {
-        runBlocking {
+        runBlocking(ApplicationDispatcher) {
             MovieListInteractor(
                 testMovieListPresenter,
                 dateTime,
@@ -82,9 +82,7 @@ class MovieListInteractorTest {
                 "apiHost",
                 "apiKey"
             ).also {
-                it.loadNextPage()
-
-                delay(500)
+                it.nextPage()
             }
         }
 
@@ -106,17 +104,16 @@ class MovieListInteractorTest {
                 "apiKey"
             ).also {
                 val firstCall = async {
-                    it.loadNextPage()
+                    it.nextPage()
                 }
 
                 val secondCall = async {
-                    it.loadNextPage()
+                    it.nextPage()
                 }
 
                 firstCall.await()
                 secondCall.await()
             }
-
         }
 
         verify(exactly = 1) {
@@ -135,16 +132,12 @@ class MovieListInteractorTest {
                 "apiHost",
                 "apiKey"
             ).also {
-                it.loadNextPage()
-
-                delay(500)
+                it.nextPage()
             }
         }
 
         runBlocking {
-            testMovieListInteractor.loadNextPage()
-
-            delay(500)
+            testMovieListInteractor.nextPage()
         }
 
         verify(exactly = 1) {
@@ -164,8 +157,6 @@ class MovieListInteractorTest {
                 "apiKey"
             )).also {
                 it.loadCurrentMovies()
-
-                delay(500)
             }
         }
 
