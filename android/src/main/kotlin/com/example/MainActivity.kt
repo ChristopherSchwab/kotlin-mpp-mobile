@@ -11,6 +11,8 @@ import common.tmdb.MovieListInteractor
 import common.tmdb.MovieListPresenter
 import common.tmdb.MovieListView
 import common.util.HttpClientHttpRequestSerializer
+import common.util.KlockDateFormat
+import common.util.KlockDateTime
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -25,7 +27,13 @@ class MainActivity : MovieListView, AppCompatActivity(), OnPageEndCallback, Coro
 
     val movieListController = MovieListController(
         MovieListInteractor(
-            MovieListPresenter(this),
+            MovieListPresenter(
+                this,
+                KlockDateFormat("yyyy-MM-dd"),
+                KlockDateFormat("MMMM d, yyyy")
+            ),
+            KlockDateTime().now(),
+            KlockDateFormat("yyyy-MM-dd"),
             HttpClientHttpRequestSerializer(),
             "api.themoviedb.org",
             "0a055ad296b0a5d7496d9a0f0cb2a7b0"

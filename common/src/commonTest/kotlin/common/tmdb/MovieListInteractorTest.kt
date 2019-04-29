@@ -3,8 +3,7 @@ package common.tmdb
 import common.tmdb.entities.TMDbConfiguration
 import common.tmdb.entities.TMDbConfigurationImages
 import common.tmdb.entities.TMDbMoviePage
-import common.util.HttpRequestSerializer
-import common.util.runBlocking
+import common.util.*
 import io.ktor.http.URLProtocol
 import io.mockk.mockk
 import io.mockk.spyk
@@ -19,6 +18,9 @@ import kotlin.test.Test
 
 class MovieListInteractorTest {
 
+    lateinit var dateTime: DateTime
+    lateinit var dateFormat: DateFormat
+
     lateinit var testMovieListPresenter: MovieListInteractorOutputBoundary
 
     lateinit var testTMDbConfiguration: TMDbConfiguration
@@ -31,6 +33,9 @@ class MovieListInteractorTest {
 
     @BeforeTest
     fun setup() {
+        dateTime = KlockDateTime().now()
+        dateFormat = KlockDateFormat("yyyy-MM-dd")
+
         testMovieListPresenter = mockk(relaxed = true)
 
         testTMDbConfiguration = TMDbConfiguration(
@@ -71,6 +76,8 @@ class MovieListInteractorTest {
         runBlocking {
             MovieListInteractor(
                 testMovieListPresenter,
+                dateTime,
+                dateFormat,
                 testHttpRequestSerializer,
                 "apiHost",
                 "apiKey"
@@ -92,6 +99,8 @@ class MovieListInteractorTest {
         runBlocking {
             MovieListInteractor(
                 testMovieListPresenter,
+                dateTime,
+                dateFormat,
                 testHttpRequestSerializer,
                 "apiHost",
                 "apiKey"
@@ -120,6 +129,8 @@ class MovieListInteractorTest {
         val testMovieListInteractor = runBlocking {
             MovieListInteractor(
                 testMovieListPresenter,
+                dateTime,
+                dateFormat,
                 testHttpRequestSerializer,
                 "apiHost",
                 "apiKey"
@@ -146,6 +157,8 @@ class MovieListInteractorTest {
         val testMovieListInteractor = runBlocking {
             spyk(MovieListInteractor(
                 testMovieListPresenter,
+                dateTime,
+                dateFormat,
                 testHttpRequestSerializer,
                 "apiHost",
                 "apiKey"

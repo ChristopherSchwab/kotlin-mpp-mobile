@@ -1,12 +1,11 @@
 package common.tmdb
 
-import com.soywiz.klock.DateTime
-import com.soywiz.klock.days
 import common.tmdb.entities.TMDbConfiguration
 import common.tmdb.entities.TMDbMoviePage
 import common.tmdb.url.TMDbConfigurationPath
 import common.tmdb.url.TMDbDiscoverPath
 import common.util.ApplicationDispatcher
+import common.util.DateFormat
 import common.util.HttpRequestSerializer
 import kotlinx.coroutines.*
 
@@ -17,6 +16,8 @@ interface MovieListInteractorInputBoundary {
 
 class MovieListInteractor(
     private val movieListPresenter: MovieListInteractorOutputBoundary,
+    private val dateTimeNow: common.util.DateTime,
+    tmDbDateFormat: DateFormat,
     private val httpRequestSerializer: HttpRequestSerializer,
     private val tmDbApiHost: String,
     tmDbApiKey: String
@@ -30,7 +31,7 @@ class MovieListInteractor(
         private set
 
     private val configurationPathBuilder = TMDbConfigurationPath.TMDbConfigurationPathBuilder(tmDbApiKey)
-    private val discoverPathBuilder = TMDbDiscoverPath.TMDbDiscoverPathBuilder(tmDbApiKey)
+    private val discoverPathBuilder = TMDbDiscoverPath.TMDbDiscoverPathBuilder(tmDbDateFormat, tmDbApiKey)
 
     private var tmDbConfiguration: TMDbConfiguration? = null
 
@@ -41,8 +42,8 @@ class MovieListInteractor(
 
         discoverPathBuilder
             .reset()
-            .primaryReleaseDateGTE(DateTime.now() - 7.days)
-            .primaryReleaseDateLTE(DateTime.now() + 1.days)
+            .primaryReleaseDateGTE(dateTimeNow.plus(-7))
+            .primaryReleaseDateLTE(dateTimeNow.plus(1))
             .sortByPopularity()
 
         loadNextPage()

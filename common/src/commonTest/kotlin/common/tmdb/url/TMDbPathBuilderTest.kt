@@ -1,13 +1,25 @@
 package common.tmdb.url
 
-import com.soywiz.klock.DateTime
-import com.soywiz.klock.days
+import common.util.DateFormat
+import common.util.DateTime
+import common.util.KlockDateFormat
+import common.util.KlockDateTime
+import kotlin.test.BeforeTest
 import kotlin.test.Test
 import kotlin.test.assertTrue
 
 class TMDbPathBuilderTest {
 
     var urlRegex = "^(https?|ftp|file)://[-a-zA-Z0-9+&@#/%?=~_|!:,.;]*[-a-zA-Z0-9+&@#/%=~_|]".toRegex()
+
+    lateinit var dateTime: DateTime
+    lateinit var dateFormat: DateFormat
+
+    @BeforeTest
+    fun setup() {
+        dateTime = KlockDateTime().now()
+        dateFormat = KlockDateFormat("yyyy-MM-dd")
+    }
 
     @Test
     fun `Build configuration path is a valid url path`() {
@@ -18,10 +30,10 @@ class TMDbPathBuilderTest {
 
     @Test
     fun `Build discover path is a valid url path`() {
-        val testTMDbDiscoverPathBuilder = TMDbDiscoverPath.TMDbDiscoverPathBuilder("apiKey")
+        val testTMDbDiscoverPathBuilder = TMDbDiscoverPath.TMDbDiscoverPathBuilder(dateFormat, "apiKey")
             .reset()
-            .primaryReleaseDateGTE(DateTime.now())
-            .primaryReleaseDateLTE(DateTime.now() + 1.days)
+            .primaryReleaseDateGTE(dateTime)
+            .primaryReleaseDateLTE(dateTime.plus(1))
             .sortByPopularity()
             .page(1)
 

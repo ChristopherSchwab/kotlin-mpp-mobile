@@ -1,21 +1,20 @@
 package common.tmdb
 
-import com.soywiz.klock.DateException
-import com.soywiz.klock.DateFormat
-import com.soywiz.klock.parse
 import common.tmdb.entities.MovieViewItem
 import common.tmdb.entities.TMDbConfiguration
 import common.tmdb.entities.TMDbMoviePage
 import common.tmdb.url.TMDbImageUrlBuilder
+import common.util.DateFormat
 import kotlinx.serialization.json.JsonException
 
-class MovieListPresenter(private val view: MovieListView): MovieListInteractorOutputBoundary {
+class MovieListPresenter(
+    private val view: MovieListView,
+    private val tmDbDateFormat: DateFormat,
+    private val movieViewItemDateFormat: DateFormat
+): MovieListInteractorOutputBoundary {
 
     private val tmDbImageUrlBuilder: TMDbImageUrlBuilder = TMDbImageUrlBuilder()
     private var tmDbConfiguration: TMDbConfiguration? = null
-
-    private val tmDbDateFormat = DateFormat("yyyy-MM-dd")
-    private val movieViewItemDateFormat = DateFormat("MMMM d, yyyy")
 
     override fun setConfiguration(tmDbConfiguration: TMDbConfiguration) {
         this.tmDbConfiguration = tmDbConfiguration
@@ -27,8 +26,8 @@ class MovieListPresenter(private val view: MovieListView): MovieListInteractorOu
                 tmDbMovie.title,
                 tmDbMovie.overview,
                 try {
-                    tmDbDateFormat.parse(tmDbMovie.releaseDate).format(movieViewItemDateFormat)
-                } catch (e: DateException) {
+                    movieViewItemDateFormat.format(tmDbDateFormat.parse(tmDbMovie.releaseDate))
+                } catch (e: IllegalArgumentException) {
                     "No date provided"
                 },
                 tmDbImageUrlBuilder.buildPosterUrl(tmDbConfiguration, tmDbMovie),

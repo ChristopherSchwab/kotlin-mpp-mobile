@@ -1,8 +1,6 @@
 package common.tmdb.url
 
-import com.soywiz.klock.DateFormat
-import com.soywiz.klock.DateTime
-import com.soywiz.klock.format
+import common.util.DateTime
 
 abstract class TMDbPath internal constructor(private val builder: TMDbPathBuilder<out TMDbPath>) {
 
@@ -48,10 +46,12 @@ class TMDbDiscoverPath private constructor(builder: TMDbDiscoverPathBuilder) : T
     override val pathBase: String
         get() = "3/discover/movie?"
 
+    class TMDbDiscoverPathBuilder(
+        private val tmDbDateFormat: common.util.DateFormat,
+        apiKey: String
+    ) : TMDbPathBuilder<TMDbDiscoverPath>(apiKey) {
 
-    class TMDbDiscoverPathBuilder(apiKey: String) : TMDbPathBuilder<TMDbDiscoverPath>(apiKey) {
-
-        private val tmDbDateFormat = DateFormat("yyyy-MM-dd")
+        //private val tmDbDateFormat = DateFormat("yyyy-MM-dd")
 
         fun reset() = apply { super.resetParameters() }
 

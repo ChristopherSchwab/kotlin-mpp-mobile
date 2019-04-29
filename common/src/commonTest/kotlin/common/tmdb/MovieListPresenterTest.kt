@@ -3,6 +3,8 @@ package common.tmdb
 import common.tmdb.entities.MovieViewItem
 import common.tmdb.entities.TMDbMovie
 import common.tmdb.entities.TMDbMoviePage
+import common.util.DateFormat
+import common.util.KlockDateFormat
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.verify
@@ -12,6 +14,8 @@ import kotlin.test.assertEquals
 
 class MovieListPresenterTest {
 
+    lateinit var tmDbDateFormat: DateFormat
+    lateinit var movieViewItemDateFormat: DateFormat
     lateinit var showMovieViewItemsList: List<MovieViewItem>
     lateinit var testMovieListView: MovieListView
     lateinit var testMovieListPresenter: MovieListPresenter
@@ -19,9 +23,12 @@ class MovieListPresenterTest {
 
     @BeforeTest
     fun setup() {
+        tmDbDateFormat = KlockDateFormat("yyyy-MM-dd")
+        movieViewItemDateFormat = KlockDateFormat("MMMM d, yyyy")
+
         testMovieListView = mockk(relaxed = true)
         every { testMovieListView.showMovieViewItems(movieViewItems = any()) } answers { showMovieViewItemsList = firstArg()}
-        testMovieListPresenter = MovieListPresenter(testMovieListView)
+        testMovieListPresenter = MovieListPresenter(testMovieListView, tmDbDateFormat, movieViewItemDateFormat)
 
         testTMDbMoviePage = TMDbMoviePage(
             1,
