@@ -31,7 +31,13 @@ class MovieListViewController: UICollectionViewController, UICollectionViewDeleg
       
       movieListController = MovieListController(
          movieListInteractor: MovieListInteractor(
-            movieListPresenter: MovieListPresenter(view: self),
+            movieListPresenter: MovieListPresenter(
+               view: self,
+               tmDbDateFormat: KlockDateFormat(pattern: "yyyy-MM-dd"),
+               movieViewItemDateFormat: KlockDateFormat(pattern: "MMMM d, yyyy")
+            ),
+            dateTimeNow: KlockDateTime().now(),
+            tmDbDateFormat: KlockDateFormat(pattern: "yyyy-MM-dd"),
             httpRequestSerializer: HttpClientHttpRequestSerializer(),
             tmDbApiHost: "api.themoviedb.org",
             tmDbApiKey: "0a055ad296b0a5d7496d9a0f0cb2a7b0"
