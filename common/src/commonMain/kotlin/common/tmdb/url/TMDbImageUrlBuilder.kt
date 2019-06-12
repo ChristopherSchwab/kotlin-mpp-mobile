@@ -3,6 +3,9 @@ package common.tmdb.url
 import common.tmdb.entities.TMDbConfiguration
 import common.tmdb.entities.TMDbMovie
 
+/**
+ * Constructs the URLs of posters and backdrops of a given movie and configuration.
+ */
 class TMDbImageUrlBuilder {
     fun buildPosterUrl(tmDbConfiguration: TMDbConfiguration?, tmDbMovie: TMDbMovie): String? {
         return if (tmDbMovie.posterPath == null || tmDbConfiguration == null) null

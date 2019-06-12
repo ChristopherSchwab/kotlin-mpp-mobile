@@ -7,6 +7,10 @@ import common.tmdb.url.TMDbImageUrlBuilder
 import common.util.DateFormat
 import kotlinx.serialization.json.JsonException
 
+/**
+ * The presenter of the movie list use case.
+ * Receives data and processes it for showing back to the user by sending it to the view.
+ */
 class MovieListPresenter(
     private val view: MovieListView,
     private val tmDbDateFormat: DateFormat,

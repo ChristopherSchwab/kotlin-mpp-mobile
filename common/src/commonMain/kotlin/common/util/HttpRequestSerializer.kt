@@ -6,6 +6,9 @@ import io.ktor.http.URLProtocol
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.json.Json
 
+/**
+ * An interface expecting a function for executing a passed HTTP request and serializign the result as class T.
+ */
 interface HttpRequestSerializer {
     suspend fun <T> executeHttpRequest(
         deserializer: KSerializer<T>,
@@ -16,6 +19,9 @@ interface HttpRequestSerializer {
     ): T
 }
 
+/**
+ * An implementation executing the HTTP request with HttpClient and serializing the result with the Json class.
+ */
 class HttpClientHttpRequestSerializer(private val httpClient: HttpClient) : HttpRequestSerializer {
 
     constructor() : this(HttpClient())

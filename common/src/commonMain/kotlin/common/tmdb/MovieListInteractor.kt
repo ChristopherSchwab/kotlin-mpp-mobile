@@ -9,11 +9,19 @@ import common.util.DateFormat
 import common.util.HttpRequestSerializer
 import kotlinx.coroutines.*
 
+/**
+ * The input boundary of the interactor.
+ * Defines what the interactor is capable of doing.
+ */
 interface MovieListInteractorInputBoundary {
     fun loadCurrentMovies()
     fun loadNextPage()
 }
 
+/**
+ * The interactor of the movie list use case.
+ * Loads current movies or the movies for a next page and sends them to the presenter.
+ */
 class MovieListInteractor(
     private val movieListPresenter: MovieListInteractorOutputBoundary,
     private val dateTimeNow: common.util.DateTime,
@@ -91,6 +99,10 @@ class MovieListInteractor(
     }
 }
 
+/**
+ * The output boundary of the interactor.
+ * Defines what the presenter should be able to receive.
+ */
 interface MovieListInteractorOutputBoundary {
     fun setConfiguration(tmDbConfiguration: TMDbConfiguration)
     fun presentMovieList(tmDbMoviePage: TMDbMoviePage)
