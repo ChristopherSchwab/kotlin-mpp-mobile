@@ -6,14 +6,18 @@ import org.jetbrains.kotlin.gradle.plugin.mpp.NativeOutputKind
 
 plugins {
     kotlin("multiplatform")
+    id("kotlinx-serialization")
 }
 
 repositories {
     jcenter()
+    maven {
+        setUrl("https://kotlin.bintray.com/kotlinx")
+        setUrl("https://dl.bintray.com/soywiz/soywiz")
+    }
 }
 
 kotlin {
-
     jvm()
 
     when (System.getenv("SDK_NAME")?.startsWith("iphoneos")) {
@@ -29,23 +33,54 @@ kotlin {
         getByName("commonMain") {
             dependencies {
                 implementation(kotlin("stdlib-common"))
+                implementation("io.ktor:ktor-client-core:1.1.3")
+                implementation("io.ktor:ktor-client-json:1.1.3")
+                implementation("com.soywiz:klock-metadata:1.3.0")
+                implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core-common:1.1.1")
+                implementation("org.jetbrains.kotlinx:kotlinx-serialization-runtime-common:0.10.0")
             }
         }
         getByName("commonTest") {
             dependencies {
                 implementation(kotlin("test-common"))
                 implementation(kotlin("test-annotations-common"))
+                implementation("io.mockk:mockk:1.9.3")
+                implementation("io.ktor:ktor-client-mock:1.1.3")
             }
         }
         getByName("jvmMain") {
             dependencies {
                 implementation(kotlin("stdlib"))
+                implementation("io.ktor:ktor-client-core-jvm:1.1.3")
+                implementation("io.ktor:ktor-client-json-jvm:1.1.3")
+                implementation("com.soywiz:klock-jvm:1.3.0")
+                implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.1.1")
+                implementation("org.jetbrains.kotlinx:kotlinx-serialization-runtime:0.10.0")
             }
         }
         getByName("jvmTest") {
             dependencies {
                 implementation(kotlin("test"))
                 implementation(kotlin("test-junit"))
+                implementation("io.ktor:ktor-client-mock-jvm:1.1.3")
+            }
+        }
+        getByName("iosMain") {
+            dependencies {
+                implementation("io.ktor:ktor-client-core-native:1.1.3")
+                implementation("io.ktor:ktor-client-ios:1.1.3")
+                implementation("io.ktor:ktor-client-json-native:1.1.3")
+                when (System.getenv("SDK_NAME")?.startsWith("iphoneos")) {
+                    true -> implementation("com.soywiz:klock-iosarm64:1.3.0")
+                    else -> implementation("com.soywiz:klock-iosx64:1.3.0")
+                }
+                implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core-native:1.1.1")
+                implementation("org.jetbrains.kotlinx:kotlinx-serialization-runtime-native:0.10.0")
+            }
+        }
+        getByName("iosTest") {
+            dependencies {
+                implementation("io.ktor:ktor-client-mock-native:1.1.3")
             }
         }
     }
