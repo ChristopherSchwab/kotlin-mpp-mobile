@@ -1,1 +1,2 @@
-kotlin-mpp-mobile
+## Example project included in the thesis "Kotlin Multiplatform for the Cross-Platform Development of Mobile Apps"
+This project serves as an example of how Kotlin Multiplatform can be used to cross-platform develop an app for Android and iOS.
